@@ -1,0 +1,24 @@
+=== SYSTEM ARCHITECTURE OVERVIEW ===
+This is a frontend-only React prototype mimicking the WhatsApp interface for broadcast and chats management.
+All data is stored in the local component/context state (and optional localStorage cache).
+
+=== DETAILED DATA FLOWS ===
+1. Chat List & Message View:
+   - Sidebar displays list of active individual chats or broadcast groups.
+   - Selecting an item updates AppContext `selectedChat` or `selectedBroadcast`.
+   - ChatWindow renders messages from selected item.
+   - Sending a message appends it to active history in AppContext.
+
+2. Broadcast Group Creation/Edit:
+   - Creating a broadcast group opens BroadcastModal.
+   - Contact numbers from contact list can be added or removed.
+   - Submitting the form saves the list in AppContext.
+
+3. Broadcast Message Statistics:
+   - Sending a broadcast message initializes a list of recipient statuses (sent).
+   - A staggered background simulation transitions recipient statuses from sent -> delivered -> read.
+   - Clicking the info icon on a broadcast message bubble retrieves the latest statuses from AppContext and displays them in a statistics details panel.
+
+=== ERROR HANDLING STRATEGIES ===
+- Validation of contact inputs (ensuring non-empty names, valid mobile formats).
+- Graceful fallbacks for missing avatars.
