@@ -97,7 +97,7 @@ const ChatWindow = ({ onEditBroadcast }) => {
     <div className="flex flex-col flex-1 h-full bg-white z-20 relative">
       
       {/* Active Conversation Header */}
-      <div className="h-16 bg-white border-b border-wa-border flex items-center justify-between px-4 py-2 shrink-0">
+      <div className="min-h-16 h-auto pt-[calc(0.5rem+env(safe-area-inset-top,0px))] pb-2 bg-white border-b border-wa-border flex items-center justify-between px-4 shrink-0">
         
         {/* Left section: Avatar & Details */}
         <div className="flex items-center space-x-3 min-w-0">
@@ -249,7 +249,7 @@ const ChatWindow = ({ onEditBroadcast }) => {
       </div>
 
       {/* Input Action Bar */}
-      <form onSubmit={handleSend} className="bg-wa-hover-chat p-3 flex items-center space-x-2 shrink-0 border-t border-wa-border">
+      <form onSubmit={handleSend} className="bg-wa-hover-chat px-3 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] flex items-center space-x-2 shrink-0 border-t border-wa-border">
         <div className="flex space-x-1 text-wa-text-secondary">
           <button type="button" className="p-2 hover:bg-wa-border rounded-full transition-colors">
             <Smile className="w-6 h-6" />

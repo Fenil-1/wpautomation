@@ -22,7 +22,7 @@ const AppContent = () => {
   const hasActiveSelection = selectedBroadcastId !== null;
 
   return (
-    <div className="w-screen h-screen flex flex-col bg-gray-100 md:py-4 md:px-6 lg:py-6 lg:px-12 select-none overflow-hidden font-sans">
+    <div className="w-screen h-dvh flex flex-col bg-gray-100 md:py-4 md:px-6 lg:py-6 lg:px-12 select-none overflow-hidden font-sans">
       <div className="flex-1 flex w-full max-w-7xl mx-auto bg-white md:rounded-2xl md:shadow-md overflow-hidden border border-wa-border">
         {/* Left Column (Sidebar + BottomNavbar) */}
         <div className={`h-full flex flex-col ${
@@ -43,7 +43,7 @@ const AppContent = () => {
       {!hasActiveSelection && (
         <button
           onClick={() => handleOpenModal(null)}
-          className="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-wa-green text-white rounded-full flex items-center justify-center shadow-lg hover:bg-wa-green-dark transition-all active:scale-95 z-30"
+          className="md:hidden fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom,0px))] right-[calc(1.5rem+env(safe-area-inset-right,0px))] w-14 h-14 bg-wa-green text-white rounded-full flex items-center justify-center shadow-lg hover:bg-wa-green-dark transition-all active:scale-95 z-30"
           title="New broadcast list"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-plus">

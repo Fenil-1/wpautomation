@@ -58,7 +58,7 @@ const Sidebar = ({ onCreateBroadcast }) => {
     <div className="w-full md:w-[380px] lg:w-[420px] h-full bg-white flex flex-col border-r border-wa-border shrink-0">
       
       {/* Top Header */}
-      <div className="h-16 flex items-center justify-between px-4 py-3 bg-white border-b border-wa-border">
+      <div className="min-h-16 h-auto pt-[calc(0.75rem+env(safe-area-inset-top,0px))] pb-3 flex items-center justify-between px-4 bg-white border-b border-wa-border">
         {/* Title */}
         <h1 className="text-2xl font-bold tracking-tight text-wa-text-primary capitalize">
           Broadcasts
