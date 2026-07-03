@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import Sidebar from './components/Sidebar';
 import ChatWindow from './components/ChatWindow';
@@ -8,6 +8,27 @@ const AppContent = () => {
   const { selectedBroadcastId } = useApp();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingBroadcastId, setEditingBroadcastId] = useState(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.visualViewport) {
+        document.documentElement.style.setProperty('--viewport-height', `${window.visualViewport.height}px`);
+      }
+    };
+    
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleResize);
+      window.visualViewport.addEventListener('scroll', handleResize);
+      handleResize(); // Initial call
+    }
+    
+    return () => {
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', handleResize);
+        window.visualViewport.removeEventListener('scroll', handleResize);
+      }
+    };
+  }, []);
 
   const handleOpenModal = (id = null) => {
     // If it's a string, we are editing. If it's an event or null, we are creating.
@@ -22,7 +43,7 @@ const AppContent = () => {
   const hasActiveSelection = selectedBroadcastId !== null;
 
   return (
-    <div className="w-screen h-dvh flex flex-col bg-gray-100 md:py-4 md:px-6 lg:py-6 lg:px-12 select-none overflow-hidden font-sans">
+    <div className="w-screen flex flex-col bg-gray-100 md:py-4 md:px-6 lg:py-6 lg:px-12 select-none overflow-hidden font-sans" style={{ height: 'var(--viewport-height, 100dvh)' }}>
       <div className="flex-1 flex w-full max-w-7xl mx-auto bg-white md:rounded-2xl md:shadow-md overflow-hidden border border-wa-border">
         {/* Left Column (Sidebar + BottomNavbar) */}
         <div className={`h-full flex flex-col ${

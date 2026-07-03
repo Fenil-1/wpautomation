@@ -43,10 +43,25 @@ const ChatWindow = ({ onEditBroadcast }) => {
     ? broadcastMessages[selectedBroadcastId] || []
     : [];
 
+  const scrollToBottom = (behavior = 'smooth') => {
+    messagesEndRef.current?.scrollIntoView({ behavior });
+  };
+
   // Scroll to bottom on new messages
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    scrollToBottom('smooth');
   }, [messages]);
+
+  // Scroll to bottom when visual viewport shrinks (keyboard shown)
+  useEffect(() => {
+    if (window.visualViewport) {
+      const handleResize = () => {
+        setTimeout(() => scrollToBottom('auto'), 150);
+      };
+      window.visualViewport.addEventListener('resize', handleResize);
+      return () => window.visualViewport.removeEventListener('resize', handleResize);
+    }
+  }, []);
 
   if (!isBroadcastActive) {
     return (
@@ -263,6 +278,9 @@ const ChatWindow = ({ onEditBroadcast }) => {
           type="text"
           value={inputText}
           onChange={e => setInputText(e.target.value)}
+          onFocus={() => {
+            setTimeout(() => scrollToBottom('smooth'), 300);
+          }}
           placeholder="Type a message..."
           className="flex-1 bg-white rounded-xl py-2.5 px-4 outline-none text-[16px] border border-transparent focus:border-wa-green/20 text-wa-text-primary placeholder:text-wa-text-secondary shadow-xs"
         />
