@@ -114,7 +114,7 @@ const initialBroadcastMessages = {
   ]
 };
 
-const SCHEMA_VERSION = 'v10';
+const SCHEMA_VERSION = 'v11';
 if (localStorage.getItem('wa_schema_version') !== SCHEMA_VERSION) {
   localStorage.clear();
   localStorage.setItem('wa_schema_version', SCHEMA_VERSION);
@@ -211,6 +211,7 @@ export const AppProvider = ({ children }) => {
             ...prev,
             [broadcastId]: list.map(msg => {
               if (msg.id === newBMessage.id) {
+                if (msg.isDeleted) return msg;
                 const updated = msg.recipients.map(r => 
                   r.contactId === memberId ? { ...r, status: 'delivered', time: delTime } : r
                 );
@@ -238,6 +239,7 @@ export const AppProvider = ({ children }) => {
             ...prev,
             [broadcastId]: list.map(msg => {
               if (msg.id === newBMessage.id) {
+                if (msg.isDeleted) return msg;
                 const updated = msg.recipients.map(r => 
                   r.contactId === memberId ? { ...r, status: 'read', time: readTime } : r
                 );
@@ -285,7 +287,22 @@ export const AppProvider = ({ children }) => {
       const history = prev[broadcastId] || [];
       return {
         ...prev,
-        [broadcastId]: history.filter(m => m.id !== messageId)
+        [broadcastId]: history.map(m => {
+          if (m.id === messageId) {
+            return {
+              ...m,
+              isDeleted: true,
+              text: '🚫 You deleted this message',
+              recipients: m.recipients.map(r => {
+                if (r.status === 'sent' || r.status === 'delivered') {
+                  return { ...r, status: 'deleted', time: '' };
+                }
+                return r;
+              })
+            };
+          }
+          return m;
+        })
       };
     });
   };
