@@ -115,7 +115,7 @@ const BroadcastModal = ({ isOpen, onClose, broadcastId = null }) => {
                 placeholder="Search contacts..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="w-full bg-transparent border-none outline-none text-sm text-wa-text-primary py-1"
+                className="w-full bg-transparent border-none outline-none text-[16px] text-wa-text-primary py-1"
               />
             </div>
           </div>

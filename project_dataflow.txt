@@ -1,13 +1,13 @@
 === SYSTEM ARCHITECTURE OVERVIEW ===
-This is a frontend-only React prototype mimicking the WhatsApp interface for broadcast and chats management.
+This is a frontend-only React prototype mimicking the WhatsApp interface for broadcast management.
 All data is stored in the local component/context state (and optional localStorage cache).
 
 === DETAILED DATA FLOWS ===
-1. Chat List & Message View:
-   - Sidebar displays list of active individual chats or broadcast groups.
-   - Selecting an item updates AppContext `selectedChat` or `selectedBroadcast`.
-   - ChatWindow renders messages from selected item.
-   - Sending a message appends it to active history in AppContext.
+1. Broadcast List & Message View:
+   - Sidebar displays list of active broadcast groups.
+   - Selecting an item updates AppContext `selectedBroadcastId`.
+   - ChatWindow renders messages from selected broadcast group.
+   - Sending a message appends it to active history in AppContext and triggers staggered status simulation.
 
 2. Broadcast Group Creation/Edit:
    - Creating a broadcast group opens BroadcastModal.
@@ -15,9 +15,21 @@ All data is stored in the local component/context state (and optional localStora
    - Submitting the form saves the list in AppContext.
 
 3. Broadcast Message Statistics:
-   - Sending a broadcast message initializes a list of recipient statuses (sent).
+   - Sending a broadcast message filters out unengaged contacts (skipped).
+   - The message initializes a list of active recipient statuses (sent).
    - A staggered background simulation transitions recipient statuses from sent -> delivered -> read.
-   - Clicking the info icon on a broadcast message bubble retrieves the latest statuses from AppContext and displays them in a statistics details panel.
+   - Clicking the info icon on a broadcast message bubble retrieves the latest statuses from AppContext and displays them in a statistics details panel, showing a "Skipped" metric for the unengaged contacts. Clicking any of the metric cards filters the list breakdown to show only the matching contacts (e.g. total list, delivered, read/seen, or skipped).
+
+4. Message Forwarding:
+   - Hovering over any message bubble in the feed reveals a Forward button.
+   - Clicking the Forward button opens a Forward modal.
+   - Users can search and select multiple broadcast lists.
+   - Clicking "Forward" clones and sends the message text to all selected broadcast lists using context state operations.
+
+5. Message Deletion:
+   - A Delete button is provided stacked vertically under the Forward button.
+   - Clicking the Delete button prompts a confirmation dialog.
+   - Upon confirmation, the message is permanently removed from the broadcast's message history in AppContext.
 
 === ERROR HANDLING STRATEGIES ===
 - Validation of contact inputs (ensuring non-empty names, valid mobile formats).

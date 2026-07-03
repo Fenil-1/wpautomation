@@ -1,7 +1,6 @@
 === FRONTEND ===
 - React (Hooks, Context, State Management)
 - Tailwind CSS (WhatsApp custom color palette, layout spacing, light theme)
-- Framer Motion (Transitions between chats, slide animations)
 - Lucide Icons (Icon representations of WhatsApp UI elements)
 
 === BACKEND ===

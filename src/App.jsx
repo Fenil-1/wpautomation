@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import Sidebar from './components/Sidebar';
 import ChatWindow from './components/ChatWindow';
-import BottomNavbar from './components/BottomNavbar';
 import BroadcastModal from './components/BroadcastModal';
 
 const AppContent = () => {
-  const { selectedChatId, selectedBroadcastId, activeTab } = useApp();
+  const { selectedBroadcastId } = useApp();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingBroadcastId, setEditingBroadcastId] = useState(null);
 
@@ -20,7 +19,7 @@ const AppContent = () => {
     setIsModalOpen(true);
   };
 
-  const hasActiveSelection = selectedChatId !== null || selectedBroadcastId !== null;
+  const hasActiveSelection = selectedBroadcastId !== null;
 
   return (
     <div className="w-screen h-screen flex flex-col bg-gray-100 md:py-4 md:px-6 lg:py-6 lg:px-12 select-none overflow-hidden font-sans">
@@ -30,7 +29,6 @@ const AppContent = () => {
           hasActiveSelection ? 'hidden md:flex' : 'flex'
         } w-full md:w-auto`}>
           <Sidebar onCreateBroadcast={handleOpenModal} />
-          <BottomNavbar />
         </div>
 
         {/* Right Column (ChatWindow) */}
@@ -42,10 +40,10 @@ const AppContent = () => {
       </div>
 
       {/* Floating Action Button (FAB) for mobile to create broadcast */}
-      {!hasActiveSelection && activeTab === 'broadcasts' && (
+      {!hasActiveSelection && (
         <button
           onClick={() => handleOpenModal(null)}
-          className="md:hidden fixed bottom-20 right-6 w-14 h-14 bg-wa-green text-white rounded-full flex items-center justify-center shadow-lg hover:bg-wa-green-dark transition-all active:scale-95 z-30"
+          className="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-wa-green text-white rounded-full flex items-center justify-center shadow-lg hover:bg-wa-green-dark transition-all active:scale-95 z-30"
           title="New broadcast list"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-plus">

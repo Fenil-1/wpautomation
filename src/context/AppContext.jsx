@@ -23,31 +23,15 @@ const initialContacts = [
 ];
 
 const initialBroadcasts = [
-  { id: 'b1', name: 'Fabric suppliers', memberIds: ['1', '5', '10', '14'], image: 'https://images.unsplash.com/photo-1584290860011-64137b755879?auto=format&fit=crop&w=100&h=100&q=80', unreadCount: 0 },
+  { id: 'b1', name: 'Fabric suppliers', memberIds: ['1', '5', '10', '14'], image: 'https://images.unsplash.com/photo-1606744824163-985d376605aa?auto=format&fit=crop&w=100&h=100&q=80', unreadCount: 0 },
   { id: 'b2', name: 'Kurti suppliers', memberIds: ['2', '9', '11'], image: 'https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?auto=format&fit=crop&w=100&h=100&q=80', unreadCount: 0 },
-  { id: 'b3', name: 'Unstitched suppliers', memberIds: ['10', '14', '5'], image: 'https://images.unsplash.com/photo-1558271881-8e44b41b5185?auto=format&fit=crop&w=100&h=100&q=80', unreadCount: 0 },
+  { id: 'b3', name: 'Unstitched suppliers', memberIds: ['10', '14', '5'], image: 'https://images.unsplash.com/photo-1588854337236-6889d631faa8?auto=format&fit=crop&w=100&h=100&q=80', unreadCount: 0 },
   { id: 'b4', name: 'Cash customers', memberIds: ['6', '12', '13'], image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=100&h=100&q=80', unreadCount: 0 },
   { id: 'b5', name: 'Tamilnadu customers', memberIds: ['7', '15'], image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=100&h=100&q=80', unreadCount: 0 },
   { id: 'b6', name: 'Bihar customers', memberIds: ['8', '16', '17'], image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=100&h=100&q=80', unreadCount: 0 },
 ];
 
-const initialChatMessages = {
-  '1': [
-    { id: 'm1_1', text: 'Got the new linen catalogs. Let me know the order quantity.', sender: 'them', timestamp: 'Yesterday, 3:02 PM', status: 'read' },
-    { id: 'm1_2', text: 'Sure, checking fabric quality first. Will let you know by tomorrow morning.', sender: 'me', timestamp: 'Yesterday, 3:05 PM', status: 'read' },
-  ],
-  '2': [
-    { id: 'm2_1', text: 'Sent the sample shipment yesterday. Tracker is in your email.', sender: 'them', timestamp: 'Today, 11:30 AM', status: 'read' },
-    { id: 'm2_2', text: 'Thanks Priya, will confirm once received.', sender: 'me', timestamp: 'Today, 11:45 AM', status: 'read' }
-  ],
-  '3': [
-    { id: 'm3_1', text: 'Hi, we have special discounts on wholesale cotton prints this week.', sender: 'me', timestamp: '3:50 PM', status: 'read' },
-    { id: 'm3_2', text: 'Mohit: Not much interested on changing the software', sender: 'them', timestamp: '3:59 PM', status: 'unread' }
-  ],
-  '4': [
-    { id: 'm4_1', text: '~Fenil: check this out!!', sender: 'them', timestamp: '1:09 PM', status: 'unread' }
-  ]
-};
+
 
 const initialBroadcastMessages = {
   'b1': [
@@ -60,8 +44,7 @@ const initialBroadcastMessages = {
       recipients: [
         { contactId: '1', status: 'read', time: 'Yesterday, 10:05 AM' },
         { contactId: '5', status: 'read', time: 'Yesterday, 10:12 AM' },
-        { contactId: '4', status: 'delivered', time: 'Yesterday, 10:02 AM' },
-        { contactId: '14', status: 'sent', time: 'Yesterday, 10:00 AM' }
+        { contactId: '14', status: 'delivered', time: 'Yesterday, 10:02 AM' }
       ]
     }
   ],
@@ -74,8 +57,7 @@ const initialBroadcastMessages = {
       status: 'read',
       recipients: [
         { contactId: '2', status: 'read', time: 'Today, 09:15 AM' },
-        { contactId: '9', status: 'read', time: 'Today, 09:18 AM' },
-        { contactId: '11', status: 'read', time: 'Today, 09:20 AM' }
+        { contactId: '9', status: 'read', time: 'Today, 09:18 AM' }
       ]
     }
   ],
@@ -88,8 +70,7 @@ const initialBroadcastMessages = {
       status: 'delivered',
       recipients: [
         { contactId: '10', status: 'delivered', time: 'Yesterday, 04:30 PM' },
-        { contactId: '14', status: 'sent', time: 'Yesterday, 04:20 PM' },
-        { contactId: '5', status: 'delivered', time: 'Yesterday, 04:25 PM' }
+        { contactId: '14', status: 'sent', time: 'Yesterday, 04:20 PM' }
       ]
     }
   ],
@@ -102,8 +83,7 @@ const initialBroadcastMessages = {
       status: 'delivered',
       recipients: [
         { contactId: '6', status: 'read', time: 'Today, 12:45 PM' },
-        { contactId: '12', status: 'delivered', time: 'Today, 12:42 PM' },
-        { contactId: '13', status: 'sent', time: 'Today, 12:40 PM' }
+        { contactId: '12', status: 'delivered', time: 'Today, 12:42 PM' }
       ]
     }
   ],
@@ -115,8 +95,7 @@ const initialBroadcastMessages = {
       timestamp: 'Today, 02:00 PM',
       status: 'read',
       recipients: [
-        { contactId: '7', status: 'read', time: 'Today, 02:10 PM' },
-        { contactId: '15', status: 'read', time: 'Today, 02:15 PM' }
+        { contactId: '7', status: 'read', time: 'Today, 02:10 PM' }
       ]
     }
   ],
@@ -129,21 +108,19 @@ const initialBroadcastMessages = {
       status: 'delivered',
       recipients: [
         { contactId: '8', status: 'read', time: 'Yesterday, 06:10 PM' },
-        { contactId: '16', status: 'delivered', time: 'Yesterday, 06:05 PM' },
-        { contactId: '17', status: 'sent', time: 'Yesterday, 06:00 PM' }
+        { contactId: '16', status: 'delivered', time: 'Yesterday, 06:05 PM' }
       ]
     }
   ]
 };
 
-const SCHEMA_VERSION = 'v8';
+const SCHEMA_VERSION = 'v10';
 if (localStorage.getItem('wa_schema_version') !== SCHEMA_VERSION) {
   localStorage.clear();
   localStorage.setItem('wa_schema_version', SCHEMA_VERSION);
 }
 
 export const AppProvider = ({ children }) => {
-  const [activeTab, setActiveTab] = useState('chats'); // 'chats' or 'broadcasts'
   const [contacts, setContacts] = useState(() => {
     const saved = localStorage.getItem('wa_contacts');
     return saved ? JSON.parse(saved) : initialContacts;
@@ -154,17 +131,13 @@ export const AppProvider = ({ children }) => {
     return saved ? JSON.parse(saved) : initialBroadcasts;
   });
 
-  const [chatMessages, setChatMessages] = useState(() => {
-    const saved = localStorage.getItem('wa_chat_messages');
-    return saved ? JSON.parse(saved) : initialChatMessages;
-  });
+
 
   const [broadcastMessages, setBroadcastMessages] = useState(() => {
     const saved = localStorage.getItem('wa_broadcast_messages');
     return saved ? JSON.parse(saved) : initialBroadcastMessages;
   });
 
-  const [selectedChatId, setSelectedChatId] = useState(null);
   const [selectedBroadcastId, setSelectedBroadcastId] = useState(null);
 
   // Sync to localStorage
@@ -176,60 +149,29 @@ export const AppProvider = ({ children }) => {
     localStorage.setItem('wa_broadcasts', JSON.stringify(broadcasts));
   }, [broadcasts]);
 
-  useEffect(() => {
-    localStorage.setItem('wa_chat_messages', JSON.stringify(chatMessages));
-  }, [chatMessages]);
+
 
   useEffect(() => {
     localStorage.setItem('wa_broadcast_messages', JSON.stringify(broadcastMessages));
   }, [broadcastMessages]);
 
-  const sendChatMessage = (contactId, text) => {
-    const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const newMessage = {
-      id: `m_${Date.now()}`,
-      text,
-      sender: 'me',
-      timestamp: timeStr,
-      status: 'sent'
-    };
 
-    setChatMessages(prev => {
-      const history = prev[contactId] || [];
-      return {
-        ...prev,
-        [contactId]: [...history, newMessage]
-      };
-    });
-
-    // Simulate delivery receipts
-    setTimeout(() => {
-      setChatMessages(prev => {
-        const history = prev[contactId] || [];
-        return {
-          ...prev,
-          [contactId]: history.map(m => m.id === newMessage.id ? { ...m, status: 'delivered' } : m)
-        };
-      });
-    }, 1500);
-
-    setTimeout(() => {
-      setChatMessages(prev => {
-        const history = prev[contactId] || [];
-        return {
-          ...prev,
-          [contactId]: history.map(m => m.id === newMessage.id ? { ...m, status: 'read' } : m)
-        };
-      });
-    }, 3000);
-  };
 
   const sendBroadcastMessage = (broadcastId, text) => {
     const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     const group = broadcasts.find(b => b.id === broadcastId);
     if (!group) return;
 
-    const initialRecipients = group.memberIds.map(memberId => ({
+    // Filter out contacts that are "least engaging" (e.g., contacts with odd index in memberIds to simulate some skipped members)
+    const activeRecipientsIds = group.memberIds.filter((memberId, idx) => {
+      // Exclude one contact for list sizes > 2 to show the skipped metric
+      if (group.memberIds.length > 2 && idx === group.memberIds.length - 1) {
+        return false; // Skip the last contact as "least engaging"
+      }
+      return true;
+    });
+
+    const initialRecipients = activeRecipientsIds.map(memberId => ({
       contactId: memberId,
       status: 'sent',
       time: timeStr
@@ -254,23 +196,7 @@ export const AppProvider = ({ children }) => {
     });
 
     // Mirror message in individual chats of all group members and run staggered status updates
-    group.memberIds.forEach((memberId, index) => {
-      const individualMessage = {
-        id: `m_bcast_${newBMessage.id}_${memberId}`,
-        text: `[Broadcast] ${text}`,
-        sender: 'me',
-        timestamp: timeStr,
-        status: 'sent'
-      };
-
-      setChatMessages(prev => {
-        const history = prev[memberId] || [];
-        return {
-          ...prev,
-          [memberId]: [...history, individualMessage]
-        };
-      });
-
+    activeRecipientsIds.forEach((memberId, index) => {
       // Staggered Delivery Simulation
       const deliveryDelay = 800 + (index * 400); // 800ms, 1200ms, 1600ms...
       const readDelay = deliveryDelay + 1000 + (index * 600); // 1800ms, 2800ms, 3800ms...
@@ -297,15 +223,6 @@ export const AppProvider = ({ children }) => {
               }
               return msg;
             })
-          };
-        });
-
-        // Update mirrored individual message status to 'delivered'
-        setChatMessages(prev => {
-          const history = prev[memberId] || [];
-          return {
-            ...prev,
-            [memberId]: history.map(m => m.id === individualMessage.id ? { ...m, status: 'delivered' } : m)
           };
         });
       }, deliveryDelay);
@@ -335,15 +252,6 @@ export const AppProvider = ({ children }) => {
             })
           };
         });
-
-        // Update mirrored individual message status to 'read'
-        setChatMessages(prev => {
-          const history = prev[memberId] || [];
-          return {
-            ...prev,
-            [memberId]: history.map(m => m.id === individualMessage.id ? { ...m, status: 'read' } : m)
-          };
-        });
       }, readDelay);
     });
   };
@@ -370,29 +278,31 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  const markChatAsRead = (contactId) => {
-    setContacts(prev => prev.map(c => c.id === contactId ? { ...c, unreadCount: 0 } : c));
+
+
+  const deleteBroadcastMessage = (broadcastId, messageId) => {
+    setBroadcastMessages(prev => {
+      const history = prev[broadcastId] || [];
+      return {
+        ...prev,
+        [broadcastId]: history.filter(m => m.id !== messageId)
+      };
+    });
   };
 
   return (
     <AppContext.Provider
       value={{
-        activeTab,
-        setActiveTab,
         contacts,
         broadcasts,
-        chatMessages,
         broadcastMessages,
-        selectedChatId,
-        setSelectedChatId,
         selectedBroadcastId,
         setSelectedBroadcastId,
-        sendChatMessage,
         sendBroadcastMessage,
         createBroadcastGroup,
         updateBroadcastGroup,
         deleteBroadcastGroup,
-        markChatAsRead
+        deleteBroadcastMessage
       }}
     >
       {children}
