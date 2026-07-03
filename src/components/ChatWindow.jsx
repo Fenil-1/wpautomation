@@ -172,7 +172,7 @@ const ChatWindow = ({ onEditBroadcast }) => {
               key={msg.id} 
               className={`flex items-center space-x-2 group w-full ${isMe ? 'justify-end' : 'justify-start'}`}
             >
-              {isMe && (
+              {isMe && !msg.isDeleted && (
                 <div className="flex flex-col items-center space-y-1">
                   <button
                     type="button"
@@ -201,7 +201,7 @@ const ChatWindow = ({ onEditBroadcast }) => {
                 }`}
               >
                 {/* Message text */}
-                <p className="whitespace-pre-wrap break-words">{msg.text}</p>
+                <p className={`whitespace-pre-wrap break-words ${msg.isDeleted ? 'italic text-wa-text-secondary/60 select-none' : ''}`}>{msg.text}</p>
                 
                 {/* Bubble timestamp & status indicator */}
                 {!isMe && (
@@ -213,6 +213,7 @@ const ChatWindow = ({ onEditBroadcast }) => {
                 )}
 
                 {isMe && (() => {
+                  if (msg.isDeleted) return null;
                   const totalIntended = msg.recipients?.length || 0;
                   const totalDelivered = msg.recipients?.filter(r => r.status === 'delivered' || r.status === 'read').length || 0;
                   const totalRead = msg.recipients?.filter(r => r.status === 'read').length || 0;
@@ -246,7 +247,7 @@ const ChatWindow = ({ onEditBroadcast }) => {
                 })()}
               </div>
 
-              {!isMe && (
+              {!isMe && !msg.isDeleted && (
                 <button
                   type="button"
                   onClick={() => handleOpenForwardModal(msg.text)}
