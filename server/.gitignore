@@ -1,0 +1,19 @@
+# dependencies
+node_modules
+
+# build output
+dist
+
+# environment — real secrets live here, never commit
+.env
+.env.local
+.env.*.local
+
+# logs
+*.log
+
+# prisma
+prisma/*.db
+
+# local persisted state (WhatsApp auth credentials, session metadata)
+.data

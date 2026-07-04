@@ -1,0 +1,41 @@
+{
+  "name": "wa-broadcast-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Backend foundation for the enterprise WhatsApp Broadcast Platform (Stage 0).",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio"
+  },
+  "prisma": {
+    "schema": "prisma/schema.prisma"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.3.0",
+    "baileys": "^7.0.0-rc13",
+    "bullmq": "^5.34.0",
+    "dotenv": "^16.4.7",
+    "fastify": "^5.2.0",
+    "ioredis": "^5.4.2",
+    "pino": "^9.6.0",
+    "qrcode": "^1.5.4",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "@types/qrcode": "^1.5.6",
+    "pino-pretty": "^13.0.0",
+    "prisma": "^6.3.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}

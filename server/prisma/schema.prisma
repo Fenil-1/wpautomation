@@ -1,0 +1,15 @@
+// Prisma schema for wa-broadcast-backend.
+//
+// STAGE 0: initialization only. No application models are defined yet —
+// contacts, campaigns, templates, teams, etc. are intentionally deferred to
+// later stages. This file exists so the Prisma Client can be generated and the
+// database connection can be validated by the health check.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
