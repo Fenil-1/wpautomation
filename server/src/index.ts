@@ -4,6 +4,7 @@ import { logger } from './lib/logger.js';
 import { connectRedis, disconnectRedis } from './lib/redis.js';
 import { disconnectPrisma } from './lib/prisma.js';
 import { sessionManager } from './modules/session/index.js';
+import { deliveryQueue, startDeliveryWorker } from './modules/delivery/index.js';
 
 /**
  * Process entrypoint. Owns the full lifecycle: boot dependencies, start the
@@ -26,10 +27,15 @@ async function main(): Promise<void> {
   // Best-effort: failures are logged inside the manager and never block boot.
   await sessionManager.restore();
 
+  // Start the broadcast-delivery worker (consumes per-recipient jobs).
+  const deliveryWorker = startDeliveryWorker();
+
   // Graceful shutdown.
   const shutdown = async (signal: string): Promise<void> => {
     logger.info({ signal }, 'shutting down');
     try {
+      await deliveryWorker.close();
+      await deliveryQueue.close();
       await sessionManager.shutdown();
       await app.close();
       await disconnectPrisma();

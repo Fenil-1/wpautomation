@@ -31,6 +31,17 @@ const envSchema = z.object({
 
   /** Root directory for local persisted state (WhatsApp auth, session metadata). */
   DATA_DIR: z.string().min(1).default('.data'),
+
+  // --- Broadcast delivery pacing / retries (Stage 3B) ---
+  /** Minimum random delay before each send, in ms. */
+  SEND_DELAY_MIN_MS: z.coerce.number().int().min(0).default(800),
+  /** Maximum random delay before each send, in ms. */
+  SEND_DELAY_MAX_MS: z.coerce.number().int().min(0).default(2500),
+  /** Max BullMQ attempts per recipient (initial try + retries). */
+  MAX_SEND_RETRIES: z.coerce.number().int().min(1).max(10).default(3),
+}).refine((env) => env.SEND_DELAY_MIN_MS <= env.SEND_DELAY_MAX_MS, {
+  message: 'SEND_DELAY_MIN_MS must be <= SEND_DELAY_MAX_MS',
+  path: ['SEND_DELAY_MIN_MS'],
 });
 
 export type Env = z.infer<typeof envSchema>;

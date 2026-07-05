@@ -44,6 +44,9 @@ model Contact {
   updatedAt DateTime @updatedAt
 
   memberships GroupMember[]
+  // Opposite side of the BroadcastRecipient FK (Stage 3A). Virtual relation
+  // field only — adds no column to the contacts table.
+  broadcastRecipients BroadcastRecipient[]
 
   // A phone is unique per country code (the WhatsApp-addressable identity).
   @@unique([countryCode, phoneNumber])
@@ -85,4 +88,75 @@ model GroupMember {
   @@index([contactId])
   @@index([groupId])
   @@map("group_members")
+}
+
+// ---------------------------------------------------------------------------
+// Broadcasts (Stage 3A — engine only; no sending, queues, or scheduling)
+// ---------------------------------------------------------------------------
+
+enum BroadcastStatus {
+  draft
+  ready
+}
+
+// How a contact was pulled into a broadcast's audience.
+enum RecipientSourceType {
+  group
+  individual
+}
+
+// Delivery state of a single recipient (Stage 3B delivery engine).
+enum RecipientStatus {
+  pending // not yet attempted
+  processing // a worker is currently handling it
+  sent // delivered to WhatsApp successfully
+  failed // permanently failed after retries / system error
+  skipped // intentionally not sent (not ready, opted out, blocked, no phone…)
+}
+
+model Broadcast {
+  id      String          @id @default(cuid())
+  name    String
+  message String
+  status  BroadcastStatus @default(draft)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  recipients BroadcastRecipient[]
+
+  @@index([status])
+  @@map("broadcasts")
+}
+
+model BroadcastRecipient {
+  id          String              @id @default(cuid())
+  broadcastId String
+  contactId   String
+  // Provenance: for `individual`, sourceId == contactId; for `group`, sourceId
+  // is the group id that first contributed this contact.
+  sourceType  RecipientSourceType
+  sourceId    String
+  status      RecipientStatus     @default(pending)
+
+  // Delivery tracking (Stage 3B). All additive/nullable — safe on existing rows.
+  attempts      Int       @default(0)
+  lastAttemptAt DateTime?
+  sentAt        DateTime?
+  failedAt      DateTime?
+  failureReason String?
+  messageId     String?
+
+  createdAt DateTime @default(now())
+
+  broadcast Broadcast @relation(fields: [broadcastId], references: [id], onDelete: Cascade)
+  contact   Contact   @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  // One row per contact per broadcast — duplicates are resolved away.
+  @@unique([broadcastId, contactId])
+  @@index([broadcastId])
+  @@index([contactId])
+  // Fast pending lookup + progress aggregation per broadcast.
+  @@index([broadcastId, status])
+  @@map("broadcast_recipients")
 }

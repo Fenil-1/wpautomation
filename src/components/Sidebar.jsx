@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { Search, Plus, MoreVertical, Edit2, CheckCheck, Users, Megaphone } from 'lucide-react';
+import { Search, Plus, MoreVertical, Edit2, CheckCheck, Megaphone } from 'lucide-react';
+
+// Format a timestamp for the list preview (time if today, else short date).
+const formatTime = (iso) => {
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
+  const now = new Date();
+  const sameDay = d.toDateString() === now.toDateString();
+  return sameDay
+    ? d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    : d.toLocaleDateString([], { day: '2-digit', month: 'short' });
+};
 
 const Sidebar = ({ onCreateBroadcast }) => {
-  const {
-    contacts,
-    broadcasts,
-    broadcastMessages,
-    selectedBroadcastId,
-    setSelectedBroadcastId
-  } = useApp();
+  const { broadcasts, loading, error, selectedBroadcastId, setSelectedBroadcastId } = useApp();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState('All'); // 'All', 'Unread'
@@ -18,45 +24,27 @@ const Sidebar = ({ onCreateBroadcast }) => {
     setSelectedBroadcastId(id);
   };
 
-  // Get last message info
-  const getLastMessage = (id) => {
-    const msgs = broadcastMessages[id];
-    if (msgs && msgs.length > 0) {
-      return msgs[msgs.length - 1];
-    }
-    return null;
-  };
-
-  // Filter lists based on search & unread status
-  const getFilteredItems = () => {
-    return broadcasts
-      .filter(broadcast => {
-        const matchesSearch = broadcast.name.toLowerCase().includes(searchQuery.toLowerCase());
-        const matchesFilter = activeFilter === 'All' || broadcast.unreadCount > 0;
-        return matchesSearch && matchesFilter;
-      })
-      .map(broadcast => {
-        const lastMsg = getLastMessage(broadcast.id);
-        return {
-          id: broadcast.id,
-          title: broadcast.name,
-          subtitle: `${broadcast.memberIds.length} recipients`,
-          lastMessage: lastMsg ? lastMsg.text : 'No broadcasts sent yet',
-          time: lastMsg ? lastMsg.timestamp : '',
-          unread: broadcast.unreadCount,
-          avatar: 'B',
-          image: broadcast.image,
-          type: 'broadcast',
-          sender: lastMsg ? lastMsg.sender : null
-        };
-      });
-  };
-
-  const listItems = getFilteredItems();
+  // Map backend broadcasts into the existing list-item shape.
+  const listItems = broadcasts
+    .filter((b) => b.name.toLowerCase().includes(searchQuery.toLowerCase()))
+    // 'Unread' has no backend equivalent yet; it simply matches nothing.
+    .filter(() => activeFilter === 'All')
+    .map((b) => ({
+      id: b.id,
+      title: b.name,
+      subtitle: `${b.recipientCount} recipients`,
+      lastMessage: b.message && b.message !== b.name ? b.message : 'No message yet',
+      time: formatTime(b.updatedAt),
+      unread: 0,
+      avatar: 'B',
+      image: null,
+      type: 'broadcast',
+      sender: 'me',
+    }));
 
   return (
     <div className="w-full md:w-[380px] lg:w-[420px] h-full bg-white flex flex-col border-r border-wa-border shrink-0">
-      
+
       {/* Top Header */}
       <div className="min-h-16 h-auto pt-[calc(0.75rem+env(safe-area-inset-top,0px))] pb-3 flex items-center justify-between px-4 bg-white border-b border-wa-border">
         {/* Title */}
@@ -141,7 +129,7 @@ const Sidebar = ({ onCreateBroadcast }) => {
                     <Megaphone className="w-5 h-5 fill-white/20" />
                   )}
                 </div>
-                
+
                 <div className="flex-1 min-w-0">
                   <div className="flex items-baseline justify-between mb-0.5">
                     <span className="font-semibold text-[15px] text-wa-text-primary truncate block pr-2">
@@ -195,7 +183,19 @@ const Sidebar = ({ onCreateBroadcast }) => {
           );
         })}
 
-        {listItems.length === 0 && (
+        {loading && listItems.length === 0 && (
+          <div className="text-center py-12 px-6 text-wa-text-secondary text-sm">
+            Loading broadcasts…
+          </div>
+        )}
+
+        {error && !loading && (
+          <div className="text-center py-12 px-6 text-red-500 text-sm">
+            Couldn’t load broadcasts. Is the backend running?
+          </div>
+        )}
+
+        {!loading && !error && listItems.length === 0 && (
           <div className="text-center py-12 px-6 text-wa-text-secondary text-sm">
             No broadcast lists found. Click the "+" button at the top to create one.
           </div>

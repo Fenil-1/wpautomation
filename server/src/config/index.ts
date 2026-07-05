@@ -36,6 +36,15 @@ export const config = {
     /** Where per-session auth credentials and metadata are stored locally. */
     sessionsDir: join(env.DATA_DIR, 'sessions'),
   },
+  delivery: {
+    /** Random pre-send delay window (pacing), in ms. */
+    sendDelayMinMs: env.SEND_DELAY_MIN_MS,
+    sendDelayMaxMs: env.SEND_DELAY_MAX_MS,
+    /** Max BullMQ attempts per recipient (initial try + retries). */
+    maxSendRetries: env.MAX_SEND_RETRIES,
+    /** Queue name for per-recipient delivery jobs. */
+    queueName: 'broadcast-delivery',
+  },
 } as const;
 
 export type Config = typeof config;

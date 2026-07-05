@@ -13,9 +13,15 @@ const API_BASE = '/api'
  */
 export async function apiRequest(path, options = {}) {
   const started = performance.now()
+  const { body: requestBody, headers, ...rest } = options
   const res = await fetch(`${API_BASE}${path}`, {
-    headers: { 'content-type': 'application/json' },
-    ...options,
+    ...rest,
+    body: requestBody,
+    // Only declare a JSON content-type when we actually send a body. Fastify
+    // rejects an empty body that claims to be application/json, which is what
+    // broke the bodiless POST /session/connect request.
+    headers:
+      requestBody !== undefined ? { 'content-type': 'application/json', ...headers } : headers,
   })
   const elapsedMs = Math.round(performance.now() - started)
 

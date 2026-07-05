@@ -4,7 +4,16 @@
       "Bash(node --input-type=module -e ' *)",
       "Bash(npx prisma *)",
       "Bash(grep -vE \"Environment variables|prisma:|deprecated|prisma-config|^$\")",
-      "Bash(npx esbuild *)"
+      "Bash(npx esbuild *)",
+      "Bash(grep -vE \"deprecated|prisma-config|^$\")",
+      "Bash(grep -vE \"deprecated|prisma-config|Update available|major update|follow the guide|npm i|└─|│|┌|┘|^$\")",
+      "Bash(node -e \"console.log\\('top:', require\\('ioredis/package.json'\\).version\\); try{console.log\\('bullmq-nested:', require\\('bullmq/node_modules/ioredis/package.json'\\).version\\)}catch{console.log\\('bullmq-nested: none \\(dedup\\)'\\)}\")",
+      "Bash(cat /tmp/wa-be.log | grep -iE \"delivery|worker|error|broadcast|deprecat|warn|fatal\" | tail -30 *)",
+      "Read(//private/tmp/**)",
+      "Bash(xargs kill -9)",
+      "Bash(pkill -9 -f \"tsx src/index.ts\")",
+      "Bash(node driver.mjs)",
+      "Bash(echo \"driver exit: $?\")"
     ]
   }
 }

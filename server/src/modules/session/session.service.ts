@@ -95,6 +95,35 @@ export class SessionService {
     return this.openSocket();
   }
 
+  /** Whether the session is connected and able to send. */
+  isConnected(): boolean {
+    return this.status === 'connected' && this.sock !== null;
+  }
+
+  /**
+   * Send a plain-text WhatsApp message. This is the ONLY sanctioned way to send
+   * — all Baileys/JID details are encapsulated here so no other module imports
+   * Baileys. Throws `ServiceUnavailableError` if the session isn't connected.
+   */
+  async sendText(params: {
+    countryCode: string;
+    phoneNumber: string;
+    text: string;
+  }): Promise<{ messageId: string; jid: string }> {
+    if (!this.isConnected() || !this.sock) {
+      throw new ServiceUnavailableError('WhatsApp session is not connected');
+    }
+    const jid = SessionService.toJid(params.countryCode, params.phoneNumber);
+    const result = await this.sock.sendMessage(jid, { text: params.text });
+    return { messageId: result?.key?.id ?? '', jid };
+  }
+
+  /** Build a WhatsApp JID from a country code + national number. */
+  private static toJid(countryCode: string, phoneNumber: string): string {
+    const digits = `${countryCode}${phoneNumber}`.replace(/\D/g, '');
+    return `${digits}@s.whatsapp.net`;
+  }
+
   /**
    * Tear down the connection.
    * @param logout when true, log out remotely and delete stored credentials

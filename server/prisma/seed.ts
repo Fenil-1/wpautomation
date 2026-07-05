@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import process from 'process';
 
 /**
  * Seed: 500 realistic Indian contacts, 20 groups, and random memberships.
