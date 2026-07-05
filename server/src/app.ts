@@ -4,6 +4,7 @@ import { loggerOptions } from './lib/logger.js';
 import { registerErrorHandler } from './middleware/error-handler.js';
 import { healthRoutes } from './modules/health/health.route.js';
 import { sessionRoutes } from './modules/session/index.js';
+import { contactRoutes, groupRoutes } from './modules/contacts/index.js';
 import { API_PREFIX } from './utils/constants.js';
 
 /**
@@ -25,6 +26,8 @@ export async function buildApp(): Promise<FastifyInstance> {
   // Feature modules — mounted under /api.
   await app.register(healthRoutes, { prefix: API_PREFIX });
   await app.register(sessionRoutes, { prefix: API_PREFIX });
+  await app.register(contactRoutes, { prefix: API_PREFIX });
+  await app.register(groupRoutes, { prefix: API_PREFIX });
 
   return app;
 }

@@ -1,9 +1,8 @@
 // Prisma schema for wa-broadcast-backend.
 //
-// STAGE 0: initialization only. No application models are defined yet —
-// contacts, campaigns, templates, teams, etc. are intentionally deferred to
-// later stages. This file exists so the Prisma Client can be generated and the
-// database connection can be validated by the health check.
+// STAGE 2: Contacts module. Models for Contact, Group, and the explicit
+// many-to-many join GroupMember. Broadcasts, templates, campaigns, teams, etc.
+// remain deferred to later stages.
 
 generator client {
   provider = "prisma-client-js"
@@ -12,4 +11,78 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Contacts
+// ---------------------------------------------------------------------------
+
+model Contact {
+  id           String  @id @default(cuid())
+  name         String
+  phoneNumber  String
+  countryCode  String  @default("+91")
+  businessName String?
+  city         String?
+  state        String?
+  notes        String?
+
+  isBlocked  Boolean @default(false)
+  isOptedOut Boolean @default(false)
+
+  lastInteractionAt DateTime?
+
+  // Engagement metrics — populated by later stages (broadcasts/analytics).
+  // Added now so we never have to backfill or migrate contacts again for them.
+  engagementScore Int       @default(100)
+  lastMessageAt   DateTime?
+  lastReplyAt     DateTime?
+  messageCount    Int       @default(0)
+  replyCount      Int       @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  memberships GroupMember[]
+
+  // A phone is unique per country code (the WhatsApp-addressable identity).
+  @@unique([countryCode, phoneNumber])
+  @@index([name])
+  @@index([city])
+  @@index([businessName])
+  @@index([isBlocked])
+  @@index([isOptedOut])
+  @@map("contacts")
+}
+
+model Group {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  description String?
+  color       String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members GroupMember[]
+
+  @@map("groups")
+}
+
+// Explicit join table for the Contact <-> Group many-to-many relationship.
+// Explicit (rather than implicit) so we can attach membership metadata later
+// (e.g. addedBy, addedAt) without a schema rewrite.
+model GroupMember {
+  id        String   @id @default(cuid())
+  groupId   String
+  contactId String
+  createdAt DateTime @default(now())
+
+  group   Group   @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, contactId])
+  @@index([contactId])
+  @@index([groupId])
+  @@map("group_members")
 }
