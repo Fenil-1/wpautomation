@@ -8,4 +8,15 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  server: {
+    // Dev-only proxy so the frontend can reach the backend without CORS and
+    // without any backend changes. Used by the /dev/session debug console.
+    // The browser calls same-origin (/api/...) and Vite forwards to the API.
+    proxy: {
+      '/api': {
+        target: 'http://localhost:4000',
+        changeOrigin: true,
+      },
+    },
+  },
 })
